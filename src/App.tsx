@@ -1,24 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import { useState } from 'react';
 
 function App() {
+  const [data, setData] = useState(null);
+  async function issueLoad() {
+    try{
+      const response = await axios.get("https://api.github.com/repos/facebook/create-react-app/issues");
+      const data = response.data;
+      console.log(data)
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://github.com/facebook/create-react-app"
           target="_blank"
-          rel="noopener noreferrer"
         >
-          Learn React
+          create-react-app - issue list
         </a>
+        <button onClick={issueLoad}>Issue Load</button>
       </header>
+      
     </div>
   );
 }
