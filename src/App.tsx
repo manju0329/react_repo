@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import axios from 'axios';
-import { getIssue } from './api/issueApi';
+import { getIssue } from './api/issueAPI';
 import { issueState, Issue } from './recoil/issueAtoms';
 import { useRecoilState } from 'recoil';
 
@@ -30,7 +29,7 @@ function App() {
           <ul>
             {issues.map((issue) => (
               <li key={issue.number}>
-                <h2><a href={issue.url}>{issue.title}</a></h2>
+                <h2><a href={issue.url} target='_blank'>{issue.title}</a></h2>
                 <p>#{issue.number}</p>
                 <p>Date : {issue.date}</p>
                 <p>Comments : {issue.comment}</p>
@@ -39,9 +38,9 @@ function App() {
           </ul>
         </div>
       <div className='pageNo'>
-          <p onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</p>
+          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
           <p>{page}</p>
-          <p onClick={() => setPage((prev) => prev + 1)}>다음 페이지</p>
+          <button onClick={() => setPage((prev) => prev + 1)}>다음 페이지</button>
       </div>
     </div>
   );
