@@ -1,33 +1,48 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import axios from 'axios';
-import { useState } from 'react';
+import { getIssue } from './api/issueApi';
+import { issueState, Issue } from './recoil/issueAtoms';
+import { useRecoilState } from 'recoil';
+
 
 function App() {
-  const [data, setData] = useState(null);
-  async function issueLoad() {
-    try{
-      const response = await axios.get("https://api.github.com/repos/facebook/create-react-app/issues");
-      const data = response.data;
-      console.log(data)
-    } catch(e) {
-      console.log(e);
+  const [issues, setIssues] = useRecoilState(issueState);
+  const [page, setPage] = useState(1); // 시작 페이지 1
+  useEffect(() => {
+    const loadIssue = async () => {
+      const data = await getIssue(page);
+      if(!data){
+        alert("불러올 이슈가 없습니다");
+      }else{
+        setIssues(data);
+      }
     }
-  }
+    loadIssue();
+    console.log("issue : ");
+    console.log(issues);
+  }, [page]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://github.com/facebook/create-react-app"
-          target="_blank"
-        >
-          create-react-app - issue list
-        </a>
-        <button onClick={issueLoad}>Issue Load</button>
-      </header>
-      
+    <div className='content'>
+      <h1>GitHub Issues</h1>
+        <div className='issueList'>
+          <ul>
+            {issues.map((issue) => (
+              <li key={issue.number}>
+                <h2><a href={issue.url}>{issue.title}</a></h2>
+                <p>#{issue.number}</p>
+                <p>Date : {issue.date}</p>
+                <p>Comments : {issue.comment}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      <div className='pageNo'>
+          <p onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</p>
+          <p>{page}</p>
+          <p onClick={() => setPage((prev) => prev + 1)}>다음 페이지</p>
+      </div>
     </div>
   );
 }
