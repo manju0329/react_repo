@@ -8,6 +8,11 @@ import { useRecoilState } from 'recoil';
 function App() {
   const [issues, setIssues] = useRecoilState(issueState);
   const [page, setPage] = useState(1); // 시작 페이지 1
+
+  const clickHandler = (url) => {
+    window.open(url, '_blank');
+  }
+
   useEffect(() => {
     const loadIssue = async () => {
       const data = await getIssue(page);
@@ -24,7 +29,7 @@ function App() {
 
   return (
     <div className='content'>
-      <h1>GitHub Issues</h1>
+      <p className='font-bold text-4xl mb-6'>GitHub Issues</p>
         {/* <div className='issueList'>
           <ul>
             {issues.map((issue) => (
@@ -37,26 +42,29 @@ function App() {
             ))}
           </ul>
         </div> */}
-        <table className="mx-auto w-96 h-64 border border-spacing-8 outline outline-gray-300 rounded-lg overflow-auto">
-          <thead className='bg-gray-200'>
-            <tr>
-              <th className='p-2'>No.</th>
-              <th>Title</th>
-              <th>Date</th>
-              <th>Comments</th>
-            </tr>
-          </thead>
-          <tbody>
-            {issues.map((issue) => (
-              <tr key={issue.number}>
-                <td className='p-1' >#{issue.number}</td>
-                <td><a href={issue.url} target='_blank'>{issue.title}</a></td>
-                <td>{issue.date}</td>
-                <td>{issue.comment}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className='table-area w-full items-center justify-center'>
+          <table className=" w-5/6 items-center h-64 border border-spacing-8 outline outline-gray-300 rounded-lg overflow-auto mx-auto">
+            <thead className='bg-gray-200'>
+              <tr>
+                <th className='p-2'>No.</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Comments</th>
+              </tr>  
+            </thead>
+            <tbody>
+              {issues.map((issue) => (
+                <tr key={issue.number} className='hover:bg-gray-300' onClick={() => clickHandler(issue.url)}>
+                  <td className='' >#{issue.number}</td>
+                  <td><a href={issue.url} target='_blank'>{issue.title}</a></td>
+                  <td>{issue.date}</td>
+                  <td>{issue.comment}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
       <div className='pageNo'>
           <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
           <p>{page}</p>
