@@ -25,7 +25,7 @@ function App() {
   return (
     <div className='content'>
       <h1>GitHub Issues</h1>
-        <div className='issueList'>
+        {/* <div className='issueList'>
           <ul>
             {issues.map((issue) => (
               <li key={issue.number}>
@@ -36,7 +36,27 @@ function App() {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <table className="mx-auto w-96 h-64 border border-spacing-8 outline outline-gray-300 rounded-lg overflow-auto">
+          <thead className='bg-gray-200'>
+            <tr>
+              <th className='p-2'>No.</th>
+              <th>Title</th>
+              <th>Date</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            {issues.map((issue) => (
+              <tr key={issue.number}>
+                <td className='p-1' >#{issue.number}</td>
+                <td><a href={issue.url} target='_blank'>{issue.title}</a></td>
+                <td>{issue.date}</td>
+                <td>{issue.comment}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       <div className='pageNo'>
           <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
           <p>{page}</p>
