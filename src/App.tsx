@@ -14,6 +14,11 @@ function App() {
     window.open(url, '_blank');
   }
 
+  const changeState = (state : string) => { // 조회 상태 변경 시 첫 페이지부터 다시 조회
+    setState(state);
+    setPage(1);
+  }
+
   useEffect(() => {
     const loadIssue = async () => {
       const data = await getIssue(page, state);
@@ -32,7 +37,7 @@ function App() {
       <div className='select-area'>
         <select
           className='border mb-3'
-          onChange={(event) => setState(event.target.value)}
+          onChange={(event) => changeState(event.target.value)}
           value={state}
           >
           <option value="all">ALL</option>
