@@ -10,8 +10,6 @@ const formatDate = (input : string): string => {
 }
 
 export const getIssue = async (page : number, state : string) : Promise<Issue[]> => {
-    console.log("state : ")
-    console.log(state)
     const response = await axios.get<Issue[]>("https://api.github.com/repos/facebook/create-react-app/issues", {
         params : {
             sort : 'comments',
@@ -22,8 +20,6 @@ export const getIssue = async (page : number, state : string) : Promise<Issue[]>
         headers : {Authorization : apiKey}
     });
     const data = response.data;
-    console.log("read data : ")
-    console.log(data);
     const issueData : Issue[] = data.map((issue : any) => ({
         number : issue.number,
         title : issue.title,

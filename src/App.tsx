@@ -10,7 +10,7 @@ function App() {
   const [page, setPage] = useState(1); // 시작 페이지 1
   const [state, setState] = useState("open");
 
-  const clickHandler = (url) => {
+  const clickHandler = (url : string) => {
     window.open(url, '_blank');
   }
 
@@ -53,7 +53,7 @@ function App() {
             <tbody>
               {issues.map((issue) => (
                 <tr key={issue.number} className='hover:bg-gray-300' onClick={() => clickHandler(issue.url)}>
-                  <td className='' >#{issue.number}</td>
+                  <td className='pl-2' >#{issue.number}</td>
                   <td><a href={issue.url} target='_blank'>{issue.title}</a></td>
                   <td>{issue.date}</td>
                   <td>{issue.comment}</td>
