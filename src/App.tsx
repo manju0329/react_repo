@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 function App() {
   const [issues, setIssues] = useRecoilState(issueState);
   const [page, setPage] = useState(1); // 시작 페이지 1
+  const [state, setState] = useState("open");
 
   const clickHandler = (url) => {
     window.open(url, '_blank');
@@ -15,33 +16,30 @@ function App() {
 
   useEffect(() => {
     const loadIssue = async () => {
-      const data = await getIssue(page);
-      if(!data){
+      const data = await getIssue(page, state);
+      if(data.length == 0){
         alert("불러올 이슈가 없습니다");
       }else{
         setIssues(data);
       }
     }
     loadIssue();
-    console.log("issue : ");
-    console.log(issues);
-  }, [page]);
+  }, [page, state]); // 페이지, 상태 변경될 때마다 실행
 
   return (
-    <div className='content'>
+    <div className='content-area'>
       <p className='font-bold text-4xl mb-6'>GitHub Issues</p>
-        {/* <div className='issueList'>
-          <ul>
-            {issues.map((issue) => (
-              <li key={issue.number}>
-                <h2><a href={issue.url} target='_blank'>{issue.title}</a></h2>
-                <p>#{issue.number}</p>
-                <p>Date : {issue.date}</p>
-                <p>Comments : {issue.comment}</p>
-              </li>
-            ))}
-          </ul>
-        </div> */}
+      <div className='select-area'>
+        <select
+          className='border mb-3'
+          onChange={(event) => setState(event.target.value)}
+          value={state}
+          >
+          <option value="all">ALL</option>
+          <option value="open">OPEN</option>
+          <option value="closed">CLOSED</option>
+        </select>
+      </div>
         <div className='table-area w-full items-center justify-center'>
           <table className=" w-5/6 items-center h-64 border border-spacing-8 outline outline-gray-300 rounded-lg overflow-auto mx-auto">
             <thead className='bg-gray-200'>
@@ -65,10 +63,10 @@ function App() {
           </table>
         </div>
 
-      <div className='pageNo'>
-          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
+      <div className='pageNo flex justify-center mt-2'>
+          <button className='mx-3' onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
           <p>{page}</p>
-          <button onClick={() => setPage((prev) => prev + 1)}>다음 페이지</button>
+          <button className='mx-3' onClick={() => setPage((prev) => prev + 1)}>다음 페이지</button>
       </div>
     </div>
   );
