@@ -19,11 +19,19 @@ function App() {
     setPage(1);
   }
 
+  const prePage = (prev : number) => {
+    if(prev == 1){
+      alert("첫 페이지입니다.");
+    }else{
+      setPage((prev) => Math.max(prev - 1, 1)); // 최소 페이지 수 1
+    }
+  }
+
   useEffect(() => {
     const loadIssue = async () => {
       const data = await getIssue(page, state);
       if(data.length == 0){
-        alert("불러올 이슈가 없습니다");
+        alert("마지막 페이지입니다.");
       }else{
         setIssues(data);
       }
@@ -69,8 +77,8 @@ function App() {
         </div>
 
       <div className='pageNo flex justify-center mt-2'>
-          <button className='mx-3' onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>이전 페이지</button>
-          <p>{page}</p>
+          <button className='mx-3' onClick={() => prePage(page)}>이전 페이지</button>
+          <p className='font-semibold'>{page}</p>
           <button className='mx-3' onClick={() => setPage((prev) => prev + 1)}>다음 페이지</button>
       </div>
     </div>

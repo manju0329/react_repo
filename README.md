@@ -16,3 +16,6 @@
 - Comments 많은 순으로 한 페이지 당 10개씩 출력
 - all / open / closed 3가지의 issue 상태별 조회 가능 (default : open)
 - 각 칸 클릭 시 해당 issue 페이지로 이동
+
+## 🔔 사용방법
+- .env - VITE_API_KEY - GitHub Access Token 설정 필요
